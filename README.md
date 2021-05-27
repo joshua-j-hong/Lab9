@@ -1,5 +1,5 @@
 # Lab9
-Ricardo Guerrero
+Ricardo Guerrero  <br >
 Joshua Hong
 
 https://joshua-j-hong.github.io/Lab9/

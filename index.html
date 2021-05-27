@@ -36,7 +36,7 @@
       <option>/</option>
     </select>
     <input type="number" name="second-num" id="second-num" />
-    <button id="calculate">Calculate</button>
+    <!--  <button id="calculate">Calculate</button> -->
     <br />
     <output></output>
   </fieldset>
@@ -55,18 +55,91 @@
     <button>Trigger a Global Error</button>
   </section>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
-    let calculateBtn = document.querySelector('#calculate');
-    calculateBtn.addEventListener('click', () => {
-      let output = document.querySelector('output');
-      let firstNum = document.querySelector('#first-num').value;
-      let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+    window.TrackJS && TrackJS.install({ 
+      token: "ad2f9240d84649fabbf1e5a55884afcf"
+      // for more configuration options, see https://docs.trackjs.com
     });
+  </script>
+
+  <script>
+    class GlobalError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = "GlobalError";
+      }
+    }
+
+    window.onerror = (() => {
+      console.log("Error Detected!");
+    });
+
+
+    try {
+      let calculateBtn = document.querySelector('#calculate');
+      calculateBtn.addEventListener('click', () => {
+        let output = document.querySelector('output');
+        let firstNum = document.querySelector('#first-num').value;
+        let secondNum = document.querySelector('#second-num').value;
+        let operator = document.querySelector('#operator').value;
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      });
+    } catch(err){
+      console.log("No calculate button found!");
+    } finally {
+      console.log("Error Calculator Loading Attempted!");
+    }
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
     // TODO - Make buttons functional
+    errorBtns[0].addEventListener('click', () => {
+      console.log("Something got logged!");
+    });
+
+    errorBtns[1].addEventListener('click', () => {
+      console.error("Something went wrong!");
+    });
+
+    errorBtns[2].addEventListener('click', () => {
+      console.dir(document.querySelector('fieldset'));
+    });
+
+    errorBtns[3].addEventListener('click', () => {
+      console.dirxml(document);
+    });
+
+    errorBtns[4].addEventListener('click', () => {
+      console.group("This is a new group!");
+      console.log("This is a message in the group!");
+    });
+
+    errorBtns[5].addEventListener('click', () => {
+      console.groupEnd();
+      console.log("The group has ended!");
+    });
+
+    errorBtns[6].addEventListener('click', () => {
+      console.table(["first elem", "second elem", "third elem"]);
+    });
+
+    errorBtns[7].addEventListener('click', () => {
+      console.time("Timer!");
+    });
+
+    errorBtns[8].addEventListener('click', () => {
+      console.timeEnd("Timer!");
+    });
+
+    errorBtns[9].addEventListener('click', () => {
+      console.trace();
+    });
+    
+    errorBtns[10].addEventListener('click', () => {
+      throw new GlobalError("No calculate button found!");
+    });
+
+
   </script>
 </body>
 </html>
